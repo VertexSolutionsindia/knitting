@@ -22,18 +22,15 @@ public partial class Admin_Main : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            ///TextBox3.Focus();
-
-
-           
-          
 
             BindData();
             getinvoiceno();
             getMaterial_Cat_No();
             getMaterial_Name_No();
             getDescription_No();
+            getDivision_No();
             show_Description();
+            show_Division();
             show_category();
             show_MaterialName();
 
@@ -70,7 +67,10 @@ public partial class Admin_Main : System.Web.UI.Page
         DropDownList8.SelectedItem.Text = ROW.Cells[4].Text;
         TextBox7.Text = ROW.Cells[5].Text;
         TextBox8.Text = ROW.Cells[6].Text;
-        TextBox9.Text = ROW.Cells[7].Text;
+        DropDownList11.SelectedItem.Text = ROW.Cells[7].Text;
+        TextBox10.Text = ROW.Cells[8].Text;
+        TextBox13.Text = ROW.Cells[9].Text;
+        TextBox15.Text = ROW.Cells[10].Text;
         this.ModalPopupExtender2.Show();
 
     }
@@ -88,13 +88,16 @@ public partial class Admin_Main : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("update Material_Entry set Material_Category=@Material_Category,Material_name=@Material_name,Description=@Description,Model=@Model,Material_Code=@Material_Code,Material_Division=@Material_Division where Material_id='" + Label16.Text + "' and Com_Id='" + company_id + "'  ", CON);
+                SqlCommand cmd = new SqlCommand("update Material_Entry set Material_Category=@Material_Category,Material_name=@Material_name,Description=@Description,Model=@Model,Material_Code=@Material_Code,Material_Division=@Material_Division,Machine_details=@Machine_details,Colors=@Colors,Shades=@Shades where Material_id='" + Label16.Text + "' and Com_Id='" + company_id + "'  ", CON);
                 cmd.Parameters.AddWithValue("@Material_Category", DropDownList6.SelectedItem.Text);
                 cmd.Parameters.AddWithValue("@Material_name", DropDownList7.SelectedItem.Text);
                 cmd.Parameters.AddWithValue("@Description", DropDownList8.SelectedItem.Text);
                 cmd.Parameters.AddWithValue("@Model", TextBox7.Text);
                 cmd.Parameters.AddWithValue("@Material_Code", TextBox8.Text);
-                cmd.Parameters.AddWithValue("@Material_Division", TextBox9.Text);
+                cmd.Parameters.AddWithValue("@Material_Division", DropDownList11.SelectedItem.Text);
+                cmd.Parameters.AddWithValue("@Machine_details", TextBox10.Text);
+                cmd.Parameters.AddWithValue("@Colors", TextBox13.Text);
+                cmd.Parameters.AddWithValue("@Shades", TextBox15.Text);
                 CON.Open();
                 cmd.ExecuteNonQuery();
                 CON.Close();
@@ -170,29 +173,36 @@ public partial class Admin_Main : System.Web.UI.Page
 
 
                         SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                        SqlCommand cmd = new SqlCommand("insert into Material_Entry values(@Material_id,@Material_name,@Material_Category,@Description,@Model,@Material_Code,@Material_Division,@Com_Id)", CON);
+                        SqlCommand cmd = new SqlCommand("insert into Material_Entry values(@Material_id,@Material_name,@Material_Category,@Description,@Model,@Material_Code,@Material_Division,@Com_Id,@Machine_details,@Colors,@Shades)", CON);
                         cmd.Parameters.AddWithValue("@Material_id", Label1.Text);
                         cmd.Parameters.AddWithValue("@Material_name", HttpUtility.HtmlDecode(DropDownList3.SelectedItem.Text));
                         cmd.Parameters.AddWithValue("@Material_Category", HttpUtility.HtmlDecode(DropDownList4.SelectedItem.Text));
                         cmd.Parameters.AddWithValue("@Description", HttpUtility.HtmlDecode(DropDownList5.SelectedItem.Text));
                         cmd.Parameters.AddWithValue("@Model", HttpUtility.HtmlDecode(TextBox14.Text));
                         cmd.Parameters.AddWithValue("@Material_Code", HttpUtility.HtmlDecode(TextBox5.Text));
-                        cmd.Parameters.AddWithValue("@Material_Division", HttpUtility.HtmlDecode(TextBox6.Text));
+                        cmd.Parameters.AddWithValue("@Material_Division", HttpUtility.HtmlDecode(DropDownList10.SelectedItem.Text));
                         cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                        cmd.Parameters.AddWithValue("@Machine_details", HttpUtility.HtmlDecode(TextBox9.Text));
+                        cmd.Parameters.AddWithValue("@Colors", HttpUtility.HtmlDecode(TextBox11.Text));
+                        cmd.Parameters.AddWithValue("@Shades", HttpUtility.HtmlDecode(TextBox12.Text));
                         CON.Open();
                         cmd.ExecuteNonQuery();
                         CON.Close();
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Material Entry Saved successfully')", true);
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Material Entry Saved Successfully')", true);
                         BindData();
                         getinvoiceno();
                         getDescription_No();
+                        getDivision_No();
                         show_Description();
                         show_category();
                         show_MaterialName();
+                        show_Division();
                         DropDownList3.Items.Clear(); 
                         TextBox14.Text = "";
                         TextBox5.Text = "";
-                        TextBox6.Text = "";
+                        TextBox9.Text = "";
+                        TextBox11.Text = "";
+                        TextBox12.Text = "";
                         con1.Close();
 
                     }
@@ -209,13 +219,17 @@ public partial class Admin_Main : System.Web.UI.Page
         getMaterial_Cat_No();
         getMaterial_Name_No();
         getDescription_No();
+        getDivision_No();
         show_Description();
         show_category();
         show_MaterialName();
+        show_Division();
         DropDownList4.Items.Clear(); 
         TextBox14.Text = "";
         TextBox5.Text = "";
-        TextBox6.Text = "";
+        TextBox9.Text = "";
+        TextBox11.Text = "";
+        TextBox12.Text = "";
     }
     private void active()
     {
@@ -455,6 +469,46 @@ public partial class Admin_Main : System.Web.UI.Page
             con1000.Close();
         }
     }
+    private void getDivision_No()
+    {
+
+        if (User.Identity.IsAuthenticated)
+        {
+
+            SqlConnection con1000 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1000 = new SqlCommand("select * from user_details where company_name='" + User.Identity.Name + "'", con1000);
+            SqlDataReader dr1000;
+            con1000.Open();
+            dr1000 = cmd1000.ExecuteReader();
+            if (dr1000.Read())
+            {
+                company_id = Convert.ToInt32(dr1000["com_id"].ToString());
+
+                int a;
+
+                SqlConnection con1 = new SqlConnection(System.Configuration.ConfigurationSettings.AppSettings["connection"]);
+                con1.Open();
+                string query = "Select Max(Dept_id) from ADD_Department where Com_Id='" + company_id + "' ";
+                SqlCommand cmd1 = new SqlCommand(query, con1);
+                SqlDataReader dr = cmd1.ExecuteReader();
+                if (dr.Read())
+                {
+                    string val = dr[0].ToString();
+                    if (val == "")
+                    {
+                        Label22.Text = "1";
+                    }
+                    else
+                    {
+                        a = Convert.ToInt32(dr[0].ToString());
+                        a = a + 1;
+                        Label22.Text = a.ToString();
+                    }
+                }
+            }
+            con1000.Close();
+        }
+    }
     
     
     private void show_category()
@@ -535,11 +589,11 @@ public partial class Admin_Main : System.Web.UI.Page
                 DropDownList1.DataBind();
                 DropDownList1.Items.Insert(0, new ListItem("All", "0"));
 
-                DropDownList3.DataSource = ds;
-                DropDownList3.DataTextField = "Material_name";
-                DropDownList3.DataValueField = "Mat_Cat_id";
-                DropDownList3.DataBind();
-                DropDownList3.Items.Insert(0, new ListItem("All", "0"));
+                //DropDownList3.DataSource = ds;
+                //DropDownList3.DataTextField = "Material_name";
+                //DropDownList3.DataValueField = "Mat_Cat_id";
+                //DropDownList3.DataBind();
+                //DropDownList3.Items.Insert(0, new ListItem("All", "0"));
 
            
 
@@ -586,6 +640,44 @@ public partial class Admin_Main : System.Web.UI.Page
                 DropDownList8.DataValueField = "Desc_id";
                 DropDownList8.DataBind();
                 DropDownList8.Items.Insert(0, new ListItem("All", "0"));
+
+                con.Close();
+            }
+            con1000.Close();
+        }
+    }
+    private void show_Division()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            SqlConnection con1000 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1000 = new SqlCommand("select * from user_details where company_name='" + User.Identity.Name + "'", con1000);
+            SqlDataReader dr1000;
+            con1000.Open();
+            dr1000 = cmd1000.ExecuteReader();
+            if (dr1000.Read())
+            {
+                company_id = Convert.ToInt32(dr1000["com_id"].ToString());
+
+                SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand cmd = new SqlCommand("Select * from ADD_Department where Com_Id='" + company_id + "' ORDER BY Dept_id  asc", con);
+                con.Open();
+                DataSet ds = new DataSet();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(ds);
+
+
+                DropDownList10.DataSource = ds;
+                DropDownList10.DataTextField = "Department_Name";
+                DropDownList10.DataValueField = "Dept_id";
+                DropDownList10.DataBind();
+                DropDownList10.Items.Insert(0, new ListItem("All", "0"));
+
+                DropDownList11.DataSource = ds;
+                DropDownList11.DataTextField = "Department_Name";
+                DropDownList11.DataValueField = "Dept_id";
+                DropDownList11.DataBind();
+                DropDownList11.Items.Insert(0, new ListItem("All", "0"));
 
                 con.Close();
             }
@@ -989,6 +1081,63 @@ public partial class Admin_Main : System.Web.UI.Page
                 da1.Fill(dt1);
                 GridView1.DataSource = dt1;
                 GridView1.DataBind();
+            }
+            con1000.Close();
+        }
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        this.ModalPopupExtender5.Show();
+    }
+    protected void Button21_Click(object sender, EventArgs e)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            SqlConnection con1000 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1000 = new SqlCommand("select * from user_details where company_name='" + User.Identity.Name + "'", con1000);
+            SqlDataReader dr1000;
+            con1000.Open();
+            dr1000 = cmd1000.ExecuteReader();
+            if (dr1000.Read())
+            {
+                company_id = Convert.ToInt32(dr1000["com_id"].ToString());
+                if (TextBox6.Text == "")
+                {
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Material Division enter Description')", true);
+                }
+                else
+                {
+                    SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                    SqlCommand cmd1 = new SqlCommand("select * from ADD_Department where Department_Name='" + TextBox6.Text + "' AND Com_Id='" + company_id + "'  ", con1);
+                    con1.Open();
+                    SqlDataReader dr1;
+                    dr1 = cmd1.ExecuteReader();
+                    if (dr1.HasRows)
+                    {
+
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Material Division already exist')", true);
+                        TextBox6.Text = "";
+                    }
+                    else
+                    {
+
+                        SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                        SqlCommand cmd = new SqlCommand("insert into ADD_Department values(@Dept_id,@Department_Name,@Com_Id)", CON);
+                        cmd.Parameters.AddWithValue("@Dept_id", Label22.Text);
+                        cmd.Parameters.AddWithValue("@Department_Name", HttpUtility.HtmlDecode(TextBox6.Text));
+                        cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                        CON.Open();
+                        cmd.ExecuteNonQuery();
+                        CON.Close();
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Material Division created successfully')", true);
+                        BindData();
+                        show_Division();
+                        getDivision_No();
+                        TextBox6.Text = "";
+                        con1.Close();
+
+                    }
+                }
             }
             con1000.Close();
         }

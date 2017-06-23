@@ -286,9 +286,9 @@
                              <li>
                                 <a href="Purchase_entry.aspx"><i class="fa fa-paypal fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Inventory </span><span class="fa arrow"></span></a>
                              <ul class="nav nav-second-level collapse">
-                      <%--              <li><a href="Purchase_entry.aspx">Billed</a></li>
-                                    <li><a href="Purchase_unbilled.aspx">Unbilled</a></li>
-                                     <li><a href="Purchase_report.aspx">Billed Report</a></li>
+                                  <li><a href="Purchase_Order.aspx">Purchase Order</a></li>
+                                    <li><a href="Purchase_Return.aspx">Purchase Return</a></li>
+                              <%--       <li><a href="Purchase_report.aspx">Billed Report</a></li>
                                       <li><a href="Unbilled_report.aspx">Unbilled Report</a></li>--%>
                            </ul>
                           
@@ -297,8 +297,7 @@
                                   <li>
                                 <a href="Stock_Inventory.aspx"><i class="fa fa-clone fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Production </span><span class="fa arrow"></span></a>
                              <ul class="nav nav-second-level collapse">
-                               <%--     <li><a href="Stock_Inventory.aspx">Overall Stock</a></li>
-                                   --%>
+                                <li><a href="MachineWiseProduction.aspx">Machine Wise Production</a></li>
                            </ul>
                           
                                
@@ -565,7 +564,7 @@
                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
    <ContentTemplate>
 
-                      <asp:Button ID="Button1" runat="server" class="btn-primary" Width="70px" Height="30px"  Text="Save" onclick="Button1_Click" 
+                      <asp:Button ID="Button1" runat="server" class="btn-primary" Width="70px" Height="30px"  Text="Save" onclick="Button1_Click" onclientclick ="return confirm(' Do you want to Save this Record')"
                           ></asp:Button>&nbsp;
  <asp:Button ID="Button2" runat="server" class="btn-primary" Width="70px" Height="30px"  Text="Clear" onclick="Button2_Click" 
                           ></asp:Button>
@@ -750,7 +749,7 @@
           </asp:TemplateField>
            <asp:TemplateField HeaderText="Delete">
           <ItemTemplate>
-              <asp:ImageButton ID="ImageButton9" runat="server" ImageUrl="~/delete3.png" Height="20px" Width="20px"  onclick="ImageButton9_Click" />
+              <asp:ImageButton ID="ImageButton9" runat="server" ImageUrl="~/delete3.png" Height="20px" Width="20px"  onclick="ImageButton9_Click" onclientclick ="return confirm(' Do you want to Delete this Record')"/>
           
           </ItemTemplate>
           
@@ -871,7 +870,7 @@
                 <td>
                     <asp:UpdatePanel ID="UpdatePanel12" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
-                            <asp:Button ID="Button16" runat="server" onclick="Button16_Click" CssClass="btn-primary" 
+                            <asp:Button ID="Button16" runat="server" onclick="Button16_Click" CssClass="btn-primary" onclientclick ="return confirm(' Do you want to Update this Record')"
                                 style="height: 26px" Text="Update" />
                         </ContentTemplate>
                     </asp:UpdatePanel>

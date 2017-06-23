@@ -254,9 +254,9 @@
                              <li>
                                 <a href="Purchase_entry.aspx"><i class="fa fa-paypal fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Inventory </span><span class="fa arrow"></span></a>
                              <ul class="nav nav-second-level collapse">
-                      <%--              <li><a href="Purchase_entry.aspx">Billed</a></li>
-                                    <li><a href="Purchase_unbilled.aspx">Unbilled</a></li>
-                                     <li><a href="Purchase_report.aspx">Billed Report</a></li>
+                                 <li><a href="Purchase_Order.aspx">Purchase Order</a></li>
+                                    <li><a href="Purchase_Return.aspx">Purchase Return</a></li>
+                              <%--       <li><a href="Purchase_report.aspx">Billed Report</a></li>
                                       <li><a href="Unbilled_report.aspx">Unbilled Report</a></li>--%>
                            </ul>
                           
@@ -265,8 +265,7 @@
                                   <li>
                                 <a href="Stock_Inventory.aspx"><i class="fa fa-clone fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Production </span><span class="fa arrow"></span></a>
                              <ul class="nav nav-second-level collapse">
-                               <%--     <li><a href="Stock_Inventory.aspx">Overall Stock</a></li>
-                                   --%>
+                                <li><a href="MachineWiseProduction.aspx">Machine Wise Production</a></li>
                            </ul>
                           
                                
