@@ -298,6 +298,7 @@
                                 <a href="Stock_Inventory.aspx"><i class="fa fa-clone fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Production </span><span class="fa arrow"></span></a>
                              <ul class="nav nav-second-level collapse">
                                 <li><a href="MachineWiseProduction.aspx">Machine Wise Production</a></li>
+                                    <li><a href="Fabric_Entry.aspx">Fabric Production</a></li>
                            </ul>
                           
                                

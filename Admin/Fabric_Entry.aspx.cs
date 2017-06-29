@@ -16,7 +16,7 @@ using System.Drawing;
 #endregion
 
 
-public partial class Admin_MachineWiseProduction : System.Web.UI.Page
+public partial class Admin_Fabric_Entry : System.Web.UI.Page
 {
     public static int company_id = 0;
     protected void Page_Load(object sender, EventArgs e)
@@ -32,13 +32,14 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
 
             getinvoiceno();
-            getAccosories_no();
-            getKnitting_no();
+            getComposition_no();
+            getQualifier_no();
             BindData();
-            show_MachineName();
-            show_Unit();
-            show_Accossories();
-            show_Knitting();
+            show_Division();
+            show_Descrition();
+            show_Colors();
+            show_CompositionName();
+            show_QualifierName();
             show_ProductName();
             active();
             created();
@@ -98,36 +99,33 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
 
         SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-        SqlCommand cmd = new SqlCommand("select * from Machine_Wise_Production where Mac_Pro_id='" + ROW.Cells[1].Text + "' and Com_Id='" + company_id + "'", con);
+        SqlCommand cmd = new SqlCommand("select * from Fabric_Entry where Fab_Pro_id='" + ROW.Cells[1].Text + "' and Com_Id='" + company_id + "'", con);
         SqlDataReader dr;
         con.Open();
         dr = cmd.ExecuteReader();
         if (dr.Read())
         {
-            Label1.Text = dr["Mac_Pro_id"].ToString();
-            DropDownList3.SelectedItem.Text = dr["Machine_Details"].ToString();
-            TextBox3.Text = dr["Yarn_Input"].ToString();
-            DropDownList6.SelectedItem.Text = dr["Yarn_Input_unit"].ToString();
-            DropDownList7.SelectedItem.Text = dr["Accessories_Used"].ToString();
-            TextBox7.Text = dr["Accessories_Used_Dtl"].ToString();
-            DropDownList10.SelectedItem.Text = dr["Colors"].ToString();
-            DropDownList8.SelectedItem.Text = dr["Shades"].ToString();
-            DropDownList1.SelectedItem.Text = dr["Knitting_Machcine"].ToString();
-            TextBox2.Text = dr["Fabric_Width"].ToString();
-            TextBox19.Text = dr["Fabric_Length"].ToString();
-            TextBox30.Text = dr["GSM"].ToString();
-            DropDownList9.SelectedItem.Text = dr["GSM_Unit"].ToString();
-            TextBox18.Text = dr["Yarn_Count"].ToString();
-            TextBox5.Text = dr["Stitch_Length"].ToString();
-            TextBox8.Text = dr["Cylinder_Dia"].ToString();
-            TextBox16.Text = dr["No_OfFeed"].ToString();
-            TextBox4.Text = dr["RPM"].ToString();
+            Label1.Text = dr["Fab_Pro_id"].ToString();
+            DropDownList3.SelectedItem.Text = dr["Division"].ToString();
+            DropDownList6.SelectedItem.Text = dr["Description"].ToString();
+            DropDownList7.SelectedItem.Text = dr["Composition"].ToString();
+            TextBox7.Text = dr["Composition_Per"].ToString();
+            DropDownList1.SelectedItem.Text = dr["Qualifier"].ToString();
+            TextBox2.Text = dr["Weight"].ToString();
+            TextBox11.Text = dr["Yarn_Count_1"].ToString();
+            TextBox5.Text = dr["Yarn_Count_2"].ToString();
+            TextBox3.Text = dr["Yarn_Count_3"].ToString();
+            DropDownList11.SelectedItem.Text = dr["Color_1"].ToString();
+            DropDownList8.SelectedItem.Text = dr["Color_2"].ToString();
+            DropDownList12.SelectedItem.Text = dr["Color_3"].ToString();
+            DropDownList9.SelectedItem.Text = dr["Color_4"].ToString();
+            TextBox8.Text = dr["Fabric_Finis_1"].ToString();
+            TextBox4.Text = dr["Fabric_Finish_2"].ToString();
             TextBox12.Text = dr["Time_Consume"].ToString();
             DropDownList4.SelectedItem.Text = dr["Times_Dtl"].ToString();
             TextBox10.Text = dr["Product_Name"].ToString();
             DropDownList5.SelectedItem.Text = dr["Quality_Check"].ToString();
-
-            DropDownList4.Focus();
+            DropDownList3.Focus();
         }
         con.Close();
 
@@ -146,60 +144,56 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("update Machine_Wise_Production set Machine_Details='" + HttpUtility.HtmlDecode(DropDownList3.SelectedItem.Text) +
-                    "', Yarn_Input='" + HttpUtility.HtmlDecode(TextBox3.Text) +
-                    "',Yarn_Input_unit='" + HttpUtility.HtmlDecode(DropDownList6.SelectedItem.Text) +
-                    "',Accessories_Used='" + HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text) +
-                    "',Accessories_Used_Dtl='" + HttpUtility.HtmlDecode(TextBox7.Text) +
-                    "',Colors='" + HttpUtility.HtmlDecode(DropDownList10.SelectedItem.Text) +
-                    "',Shades='" + HttpUtility.HtmlDecode(DropDownList8.SelectedItem.Text) +
-                    "',Knitting_Machcine='" + HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text) +
-                       "',Fabric_Width='" + HttpUtility.HtmlDecode(TextBox2.Text) +
-                       "',Fabric_Length='" + HttpUtility.HtmlDecode(TextBox19.Text) +
-                       "',GSM='" + HttpUtility.HtmlDecode(TextBox30.Text) +
-                         "',GSM_Unit='" + HttpUtility.HtmlDecode(DropDownList9.SelectedItem.Text) +
-                          "',Yarn_Count='" + HttpUtility.HtmlDecode(TextBox18.Text) +
-                          "',Stitch_Length='" + HttpUtility.HtmlDecode(TextBox5.Text) +
-                          "',Cylinder_Dia='" + HttpUtility.HtmlDecode(TextBox8.Text) +
-                          "',No_OfFeed='" + HttpUtility.HtmlDecode(TextBox16.Text) +
-                          "',RPM='" + HttpUtility.HtmlDecode(TextBox4.Text) +
+                SqlCommand cmd = new SqlCommand("update Fabric_Entry set Division='" + HttpUtility.HtmlDecode(DropDownList3.SelectedItem.Text) +
+                    "', Description='" + HttpUtility.HtmlDecode(DropDownList6.SelectedItem.Text) +
+                    "',Composition='" + HttpUtility.HtmlDecode(DropDownList7.SelectedItem.Text) +
+                    "',Composition_Per='" + HttpUtility.HtmlDecode(TextBox7.Text) +
+                    "',Qualifier='" + HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text) +
+                    "',Weight='" + HttpUtility.HtmlDecode(TextBox2.Text) +
+                    "',Yarn_Count_1='" + HttpUtility.HtmlDecode(TextBox11.Text) +
+                    "',Yarn_Count_2='" + HttpUtility.HtmlDecode(TextBox5.Text) +
+                       "',Yarn_Count_3='" + HttpUtility.HtmlDecode(TextBox3.Text) +
+                       "',Color_1='" + HttpUtility.HtmlDecode(DropDownList11.SelectedItem.Text) +
+                       "',Color_2='" + HttpUtility.HtmlDecode(DropDownList8.SelectedItem.Text) +
+                         "',Color_3='" + HttpUtility.HtmlDecode(DropDownList12.SelectedItem.Text) +
+                          "',Color_4='" + HttpUtility.HtmlDecode(DropDownList9.SelectedItem.Text) +
+                          "',Fabric_Finis_1='" + HttpUtility.HtmlDecode(TextBox8.Text) +
+                          "',Fabric_Finish_2='" + HttpUtility.HtmlDecode(TextBox4.Text) +
                           "',Time_Consume='" + HttpUtility.HtmlDecode(TextBox12.Text) +
                           "',Times_Dtl='" + HttpUtility.HtmlDecode(DropDownList4.SelectedItem.Text) +
                            "',Product_Name='" + HttpUtility.HtmlDecode(TextBox10.Text) +
                          "',Quality_Check='" + HttpUtility.HtmlDecode(DropDownList5.SelectedItem.Text) +
-                    "' where Mac_Pro_id='" + Label1.Text + "'  and Com_Id='" + company_id + "' ", CON);
+                    "' where Fab_Pro_id='" + Label1.Text + "'  and Com_Id='" + company_id + "' ", CON);
 
                 CON.Open();
                 cmd.ExecuteNonQuery();
                 CON.Close();
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Machine Wise Production Updated successfully')", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Fabric Entry Updated successfully')", true);
                 TextBox3.Text = "";
                 TextBox2.Text = "";
                 TextBox4.Text = "";
                 TextBox7.Text = "";
                 TextBox12.Text = "";
-                TextBox19.Text = "";
-                TextBox30.Text = "";
-                TextBox18.Text = "";
+                TextBox11.Text = "";
                 TextBox5.Text = "";
                 TextBox8.Text = "";
-                TextBox16.Text = "";
                 TextBox10.Text = "";
                 getinvoiceno();
-                getAccosories_no();
-                getKnitting_no();
+                getComposition_no();
+                getQualifier_no();
                 BindData();
-                show_MachineName();
-                show_Unit();
-                show_Accossories();
-                show_Knitting();
+                show_Division();
+                show_Descrition();
+                show_Colors();
+                show_CompositionName();
+                show_QualifierName();
                 show_ProductName();
-                Button12.Visible = false;
-                Button1.Visible = true;
                 DropDownList5.Items.Clear();
                 DropDownList5.Items.Insert(0, new ListItem("All", "0"));
                 DropDownList5.Items.Insert(1, new ListItem("Yes", "1"));
                 DropDownList5.Items.Insert(2, new ListItem("No", "2"));
+                Button12.Visible = false;
+                Button1.Visible = true;
             }
             con1000.Close();
         }
@@ -230,7 +224,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                         SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
 
                         con.Open();
-                        SqlCommand cmd = new SqlCommand("delete from Machine_Wise_Production where Mac_Pro_id='" + usrid + "' and Com_Id='" + company_id + "'", con);
+                        SqlCommand cmd = new SqlCommand("delete from Fabric_Entry where Fab_Pro_id='" + usrid + "' and Com_Id='" + company_id + "'", con);
                         cmd.ExecuteNonQuery();
                         con.Close();
 
@@ -242,8 +236,8 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
             con1000.Close();
         }
     }
-   
-    private void show_MachineName()
+
+    private void show_Division()
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -257,29 +251,18 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("Select * from Material_Entry where Com_Id='" + company_id + "' ORDER BY Material_id asc", con);
+                SqlCommand cmd = new SqlCommand("Select * from ADD_Department where Com_Id='" + company_id + "' ORDER BY Dept_id asc", con);
                 con.Open();
                 DataSet ds = new DataSet();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(ds);
 
                 DropDownList3.DataSource = ds;
-                DropDownList3.DataTextField = "Machine_details";
-                DropDownList3.DataValueField = "Material_id";
+                DropDownList3.DataTextField = "Department_Name";
+                DropDownList3.DataValueField = "Dept_id";
                 DropDownList3.DataBind();
                 DropDownList3.Items.Insert(0, new ListItem("All", "0"));
 
-                DropDownList10.DataSource = ds;
-                DropDownList10.DataTextField = "Colors";
-                DropDownList10.DataValueField = "Material_id";
-                DropDownList10.DataBind();
-                DropDownList10.Items.Insert(0, new ListItem("All", "0"));
-
-                DropDownList8.DataSource = ds;
-                DropDownList8.DataTextField = "Shades";
-                DropDownList8.DataValueField = "Material_id";
-                DropDownList8.DataBind();
-                DropDownList8.Items.Insert(0, new ListItem("All", "0"));
 
                 con.Close();
             }
@@ -300,7 +283,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("Select * from Machine_Wise_Production where Com_Id='" + company_id + "' ORDER BY Mac_Pro_id asc", con);
+                SqlCommand cmd = new SqlCommand("Select * from Fabric_Entry where Com_Id='" + company_id + "' ORDER BY Fab_Pro_id asc", con);
                 con.Open();
                 DataSet ds = new DataSet();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -308,7 +291,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
                 DropDownList2.DataSource = ds;
                 DropDownList2.DataTextField = "Product_Name";
-                DropDownList2.DataValueField = "Mac_Pro_id";
+                DropDownList2.DataValueField = "Fab_Pro_id";
                 DropDownList2.DataBind();
                 DropDownList2.Items.Insert(0, new ListItem("All", "0"));
 
@@ -319,7 +302,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
             con1000.Close();
         }
     }
-    private void show_Unit()
+    private void show_Descrition()
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -333,23 +316,18 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("Select * from ADD_Unit where Com_Id='" + company_id + "' ORDER BY Unit_id asc", con);
+                SqlCommand cmd = new SqlCommand("Select * from ADD_Description where Com_Id='" + company_id + "' ORDER BY Desc_id asc", con);
                 con.Open();
                 DataSet ds = new DataSet();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(ds);
 
                 DropDownList6.DataSource = ds;
-                DropDownList6.DataTextField = "Unit_Name";
-                DropDownList6.DataValueField = "Unit_id";
+                DropDownList6.DataTextField = "Description";
+                DropDownList6.DataValueField = "Desc_id";
                 DropDownList6.DataBind();
                 DropDownList6.Items.Insert(0, new ListItem("All", "0"));
 
-                DropDownList9.DataSource = ds;
-                DropDownList9.DataTextField = "Unit_Name";
-                DropDownList9.DataValueField = "Unit_id";
-                DropDownList9.DataBind();
-                DropDownList9.Items.Insert(0, new ListItem("All", "0"));
 
 
                 con.Close();
@@ -357,7 +335,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
             con1000.Close();
         }
     }
-    private void show_Accossories()
+    private void show_Colors()
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -371,7 +349,57 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("Select * from ADD_Accessories where Com_Id='" + company_id + "' ORDER BY Accessories_id asc", con);
+                SqlCommand cmd = new SqlCommand("Select * from Material_Entry where Com_Id='" + company_id + "' ORDER BY Material_id asc", con);
+                con.Open();
+                DataSet ds = new DataSet();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(ds);
+
+
+                DropDownList11.DataSource = ds;
+                DropDownList11.DataTextField = "Colors";
+                DropDownList11.DataValueField = "Material_id";
+                DropDownList11.DataBind();
+                DropDownList11.Items.Insert(0, new ListItem("All", "0"));
+
+                DropDownList8.DataSource = ds;
+                DropDownList8.DataTextField = "Colors";
+                DropDownList8.DataValueField = "Material_id";
+                DropDownList8.DataBind();
+                DropDownList8.Items.Insert(0, new ListItem("All", "0"));
+
+                DropDownList12.DataSource = ds;
+                DropDownList12.DataTextField = "Colors";
+                DropDownList12.DataValueField = "Material_id";
+                DropDownList12.DataBind();
+                DropDownList12.Items.Insert(0, new ListItem("All", "0"));
+
+                DropDownList9.DataSource = ds;
+                DropDownList9.DataTextField = "Colors";
+                DropDownList9.DataValueField = "Material_id";
+                DropDownList9.DataBind();
+                DropDownList9.Items.Insert(0, new ListItem("All", "0"));
+
+                con.Close();
+            }
+            con1000.Close();
+        }
+    }
+    private void show_CompositionName()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            SqlConnection con1000 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1000 = new SqlCommand("select * from user_details where company_name='" + User.Identity.Name + "'", con1000);
+            SqlDataReader dr1000;
+            con1000.Open();
+            dr1000 = cmd1000.ExecuteReader();
+            if (dr1000.Read())
+            {
+                company_id = Convert.ToInt32(dr1000["com_id"].ToString());
+
+                SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand cmd = new SqlCommand("Select * from ADD_Composition where Com_Id='" + company_id + "' ORDER BY Composition_id asc", con);
                 con.Open();
                 DataSet ds = new DataSet();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -379,8 +407,8 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
 
                 DropDownList7.DataSource = ds;
-                DropDownList7.DataTextField = "Accessories_Name";
-                DropDownList7.DataValueField = "Accessories_id";
+                DropDownList7.DataTextField = "Composition_Name";
+                DropDownList7.DataValueField = "Composition_id";
                 DropDownList7.DataBind();
                 DropDownList7.Items.Insert(0, new ListItem("All", "0"));
 
@@ -389,7 +417,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
             con1000.Close();
         }
     }
-    private void show_Knitting()
+    private void show_QualifierName()
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -403,7 +431,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand cmd = new SqlCommand("Select * from ADD_Knitting where Com_Id='" + company_id + "' ORDER BY Knitting_id asc", con);
+                SqlCommand cmd = new SqlCommand("Select * from ADD_Qualifier where Com_Id='" + company_id + "' ORDER BY Quali_Comp_id asc", con);
                 con.Open();
                 DataSet ds = new DataSet();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -411,8 +439,8 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
 
                 DropDownList1.DataSource = ds;
-                DropDownList1.DataTextField = "Knitting_Name";
-                DropDownList1.DataValueField = "Knitting_id";
+                DropDownList1.DataTextField = "Quali_Company_Name";
+                DropDownList1.DataValueField = "Quali_Comp_id";
                 DropDownList1.DataBind();
                 DropDownList1.Items.Insert(0, new ListItem("All", "0"));
 
@@ -421,20 +449,19 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
             con1000.Close();
         }
     }
-
     protected void Button1_Click(object sender, EventArgs e)
     {
         if (DropDownList3.SelectedItem.Text == "All")
         {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Select Machine Details')", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Select Division')", true);
+        }
+        else if (DropDownList6.SelectedItem.Text == "All")
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Select Description')", true);
         }
         else if (DropDownList1.SelectedItem.Text == "All")
         {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Select Knitting Machine')", true);
-        }
-        else if (DropDownList7.SelectedItem.Text == "All")
-        {
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Select Accessories Details')", true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Select Qualifier')", true);
         }
         else if (DropDownList5.SelectedItem.Text == "All")
         {
@@ -454,25 +481,23 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                     company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                     SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                    SqlCommand cmd = new SqlCommand("insert into Machine_Wise_Production values(@Mac_Pro_id,@Machine_Details,@Yarn_Input,@Yarn_Input_unit,@Accessories_Used,@Accessories_Used_Dtl,@Colors,@Shades,@Knitting_Machcine,@Fabric_Width,@Fabric_Length,@GSM,@GSM_Unit,@Yarn_Count,@Stitch_Length,@Cylinder_Dia,@No_OfFeed,@RPM,@Time_Consume,@Times_Dtl,@Com_Id,@Product_Name,@Quality_Check)", CON);
-                    cmd.Parameters.AddWithValue("@Mac_Pro_id", Label1.Text);
-                    cmd.Parameters.AddWithValue("@Machine_Details", HttpUtility.HtmlDecode(DropDownList3.SelectedItem.Text));
-                    cmd.Parameters.AddWithValue("@Yarn_Input", HttpUtility.HtmlDecode(TextBox3.Text));
-                    cmd.Parameters.AddWithValue("@Yarn_Input_unit", HttpUtility.HtmlDecode(DropDownList6.SelectedItem.Text));
-                    cmd.Parameters.AddWithValue("@Accessories_Used", HttpUtility.HtmlDecode(DropDownList7.SelectedItem.Text));
-                    cmd.Parameters.AddWithValue("@Accessories_Used_Dtl", HttpUtility.HtmlDecode(TextBox7.Text));
-                    cmd.Parameters.AddWithValue("@Colors", HttpUtility.HtmlDecode(DropDownList10.SelectedItem.Text));
-                    cmd.Parameters.AddWithValue("@Shades", HttpUtility.HtmlDecode(DropDownList8.SelectedItem.Text));
-                    cmd.Parameters.AddWithValue("@Knitting_Machcine", HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text));
-                    cmd.Parameters.AddWithValue("@Fabric_Width", HttpUtility.HtmlDecode(TextBox2.Text));
-                    cmd.Parameters.AddWithValue("@Fabric_Length", HttpUtility.HtmlDecode(TextBox19.Text));
-                    cmd.Parameters.AddWithValue("@GSM", HttpUtility.HtmlDecode(TextBox30.Text));
-                    cmd.Parameters.AddWithValue("@GSM_Unit", HttpUtility.HtmlDecode(DropDownList9.SelectedItem.Text));
-                    cmd.Parameters.AddWithValue("@Yarn_Count", HttpUtility.HtmlDecode(TextBox18.Text));
-                    cmd.Parameters.AddWithValue("@Stitch_Length", HttpUtility.HtmlDecode(TextBox5.Text));
-                    cmd.Parameters.AddWithValue("@Cylinder_Dia", HttpUtility.HtmlDecode(TextBox8.Text));
-                    cmd.Parameters.AddWithValue("@No_OfFeed", HttpUtility.HtmlDecode(TextBox16.Text));
-                    cmd.Parameters.AddWithValue("@RPM", HttpUtility.HtmlDecode(TextBox4.Text));
+                    SqlCommand cmd = new SqlCommand("insert into Fabric_Entry values(@Fab_Pro_id,@Division,@Description,@Composition,@Composition_Per,@Qualifier,@Weight,@Yarn_Count_1,@Yarn_Count_2,@Yarn_Count_3,@Color_1,@Color_2,@Color_3,@Color_4,@Fabric_Finis_1,@Fabric_Finish_2,@Time_Consume,@Times_Dtl,@Com_Id,@Product_Name,@Quality_Check)", CON);
+                    cmd.Parameters.AddWithValue("@Fab_Pro_id", Label1.Text);
+                    cmd.Parameters.AddWithValue("@Division", HttpUtility.HtmlDecode(DropDownList3.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Description", HttpUtility.HtmlDecode(DropDownList6.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Composition", HttpUtility.HtmlDecode(DropDownList7.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Composition_Per", HttpUtility.HtmlDecode(TextBox7.Text));
+                    cmd.Parameters.AddWithValue("@Qualifier", HttpUtility.HtmlDecode(DropDownList1.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Weight", HttpUtility.HtmlDecode(TextBox2.Text));
+                    cmd.Parameters.AddWithValue("@Yarn_Count_1", HttpUtility.HtmlDecode(TextBox11.Text));
+                    cmd.Parameters.AddWithValue("@Yarn_Count_2", HttpUtility.HtmlDecode(TextBox5.Text));
+                    cmd.Parameters.AddWithValue("@Yarn_Count_3", HttpUtility.HtmlDecode(TextBox3.Text));
+                    cmd.Parameters.AddWithValue("@Color_1", HttpUtility.HtmlDecode(DropDownList11.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Color_2", HttpUtility.HtmlDecode(DropDownList8.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Color_3", HttpUtility.HtmlDecode(DropDownList12.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Color_4", HttpUtility.HtmlDecode(DropDownList9.SelectedItem.Text));
+                    cmd.Parameters.AddWithValue("@Fabric_Finis_1", HttpUtility.HtmlDecode(TextBox8.Text));
+                    cmd.Parameters.AddWithValue("@Fabric_Finish_2", HttpUtility.HtmlDecode(TextBox4.Text));
                     cmd.Parameters.AddWithValue("@Time_Consume", HttpUtility.HtmlDecode(TextBox12.Text));
                     cmd.Parameters.AddWithValue("@Times_Dtl", HttpUtility.HtmlDecode(DropDownList4.SelectedItem.Text));
                     cmd.Parameters.AddWithValue("@Com_Id", company_id);
@@ -482,28 +507,26 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                     CON.Open();
                     cmd.ExecuteNonQuery();
                     CON.Close();
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Machine Wise Production Saved successfully')", true);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Fabric Entry Saved successfully')", true);
                     TextBox3.Text = "";
                     TextBox2.Text = "";
                     TextBox4.Text = "";
                     TextBox7.Text = "";
                     TextBox12.Text = "";
-                    TextBox19.Text = "";
-                    TextBox30.Text = "";
-                    TextBox18.Text = "";
+                    TextBox11.Text = "";
                     TextBox5.Text = "";
-                    TextBox8.Text = "";
-                    TextBox16.Text = "";
+                    TextBox8.Text = "";      
                     TextBox10.Text = "";
                     getinvoiceno();
-                    getAccosories_no();
-                    getKnitting_no();
+                    getComposition_no();
+                    getQualifier_no();
                     BindData();
-                    show_MachineName();
-                    show_Unit();
-                    show_Accossories();
+                    show_Division();
+                    show_Descrition();
+                    show_Colors();
+                    show_CompositionName();
+                    show_QualifierName();
                     show_ProductName();
-                    show_Knitting();
                     DropDownList5.Items.Clear();
                     DropDownList5.Items.Insert(0, new ListItem("All", "0"));
                     DropDownList5.Items.Insert(1, new ListItem("Yes", "1"));
@@ -516,70 +539,68 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
     protected void Button2_Click(object sender, EventArgs e)
     {
-
         TextBox3.Text = "";
         TextBox2.Text = "";
         TextBox4.Text = "";
         TextBox7.Text = "";
         TextBox12.Text = "";
-        TextBox19.Text = "";
-        TextBox30.Text = "";
-        TextBox18.Text = "";
+        TextBox11.Text = "";
         TextBox5.Text = "";
         TextBox8.Text = "";
-        TextBox16.Text = "";
         TextBox10.Text = "";
-
         getinvoiceno();
-        getAccosories_no();
-        getKnitting_no();
+        getComposition_no();
+        getQualifier_no();
         BindData();
-        show_MachineName();
-        show_Unit();
-        show_Accossories();
-        show_Knitting();
-        DropDownList4.Focus();
+        show_Division();
+        show_Descrition();
+        show_Colors();
+        show_CompositionName();
+        show_QualifierName();
+        show_ProductName();
         Button12.Visible = false;
         Button1.Visible = true;
         DropDownList5.Items.Clear();
         DropDownList5.Items.Insert(0, new ListItem("All", "0"));
         DropDownList5.Items.Insert(1, new ListItem("Yes", "1"));
         DropDownList5.Items.Insert(2, new ListItem("No", "2"));
+        DropDownList3.Focus();
+
     }
     private void active()
     {
 
     }
-    //[System.Web.Script.Services.ScriptMethod()]
-    //[System.Web.Services.WebMethod]
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
 
-    //public static List<string> SearchCustomers1(string prefixText, int count)
-    //{
-    //    //using (SqlConnection conn = new SqlConnection())
-    //    //{
-    //    //    conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
+    public static List<string> SearchCustomers1(string prefixText, int count)
+    {
+        using (SqlConnection conn = new SqlConnection())
+        {
+            conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
 
-    //    //    using (SqlCommand cmd = new SqlCommand())
-    //    //    {
-    //    //        cmd.CommandText = "select distinct Mobile_no from Purchase_Return where Com_Id=@Com_Id and " +
-    //    //        "Mobile_no like @Mobile_no + '%'";
-    //    //        cmd.Parameters.AddWithValue("@Mobile_no", prefixText);
-    //    //        cmd.Parameters.AddWithValue("@Com_Id",company_id);
-    //    //        cmd.Connection = conn;
-    //    //        conn.Open();
-    //    //        List<string> customers = new List<string>();
-    //    //        using (SqlDataReader sdr = cmd.ExecuteReader())
-    //    //        {
-    //    //            while (sdr.Read())
-    //    //            {
-    //    //                customers.Add(sdr["Mobile_no"].ToString());
-    //    //            }
-    //    //        }
-    //    //        conn.Close();
-    //    //        return customers;
-    //    //    }
-    //    //}
-    //}
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select distinct Department_Name from ADD_Department where Com_Id=@Com_Id and " +
+                "Department_Name like @Department_Name + '%'";
+                cmd.Parameters.AddWithValue("@Department_Name", prefixText);
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Connection = conn;
+                conn.Open();
+                List<string> customers = new List<string>();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        customers.Add(sdr["Department_Name"].ToString());
+                    }
+                }
+                conn.Close();
+                return customers;
+            }
+        }
+    }
 
     //[System.Web.Script.Services.ScriptMethod()]
     //[System.Web.Services.WebMethod]
@@ -669,7 +690,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand CMD = new SqlCommand("select * from Machine_Wise_Production where Com_Id='" + company_id + "' ORDER BY Mac_Pro_id asc", con);
+                SqlCommand CMD = new SqlCommand("select * from Fabric_Entry where Com_Id='" + company_id + "' ORDER BY Fab_Pro_id asc", con);
                 DataTable dt1 = new DataTable();
                 SqlDataAdapter da1 = new SqlDataAdapter(CMD);
                 da1.Fill(dt1);
@@ -697,13 +718,13 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 SqlConnection con = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
 
                 con.Open();
-                SqlCommand cmd = new SqlCommand("delete from Machine_Wise_Production where Mac_Pro_id='" + row.Cells[1].Text + "' and Com_Id='" + company_id + "' ", con);
+                SqlCommand cmd = new SqlCommand("delete from Fabric_Entry where Fab_Pro_id='" + row.Cells[1].Text + "' and Com_Id='" + company_id + "' ", con);
                 cmd.ExecuteNonQuery();
                 con.Close();
 
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Machine Wise Production Deleted Successfully')", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Fabric Entry Deleted Successfully')", true);
 
-                BindData();  
+                BindData();
                 getinvoiceno();
                 show_ProductName();
             }
@@ -728,7 +749,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
                 SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
                 con1.Open();
-                string query = "Select max(Mac_Pro_id) from Machine_Wise_Production where Com_Id='" + company_id + "'";
+                string query = "Select max(Fab_Pro_id) from Fabric_Entry where Com_Id='" + company_id + "'";
                 SqlCommand cmd1 = new SqlCommand(query, con1);
                 SqlDataReader dr = cmd1.ExecuteReader();
                 if (dr.Read())
@@ -751,7 +772,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
     }
 
 
-    private void getAccosories_no()
+    private void getComposition_no()
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -768,7 +789,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
                 SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
                 con1.Open();
-                string query = "Select max(Accessories_id) from ADD_Accessories where Com_Id='" + company_id + "'";
+                string query = "Select max(Composition_id) from ADD_Composition where Com_Id='" + company_id + "'";
                 SqlCommand cmd1 = new SqlCommand(query, con1);
                 SqlDataReader dr = cmd1.ExecuteReader();
                 if (dr.Read())
@@ -790,7 +811,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
         }
 
     }
-    private void getKnitting_no()
+    private void getQualifier_no()
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -807,7 +828,7 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
                 SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
                 con1.Open();
-                string query = "Select max(Knitting_id) from ADD_Knitting where Com_Id='" + company_id + "'";
+                string query = "Select max(Quali_Comp_id) from ADD_Qualifier where Com_Id='" + company_id + "'";
                 SqlCommand cmd1 = new SqlCommand(query, con1);
                 SqlDataReader dr = cmd1.ExecuteReader();
                 if (dr.Read())
@@ -904,19 +925,19 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
                 if (TextBox9.Text == "")
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Enter Accessories Name')", true);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Enter Composition Name')", true);
                 }
                 else
                 {
                     SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                    SqlCommand cmd1 = new SqlCommand("select * from ADD_Accessories where Accessories_Name='" + TextBox9.Text + "' AND Com_Id='" + company_id + "'  ", con1);
+                    SqlCommand cmd1 = new SqlCommand("select * from ADD_Composition where Composition_Name='" + TextBox9.Text + "' AND Com_Id='" + company_id + "'  ", con1);
                     con1.Open();
                     SqlDataReader dr1;
                     dr1 = cmd1.ExecuteReader();
                     if (dr1.HasRows)
                     {
 
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Accessories Name already exist')", true);
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Composition Name already exist')", true);
                         TextBox9.Text = "";
                     }
                     else
@@ -925,17 +946,17 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
 
                         SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                        SqlCommand cmd = new SqlCommand("insert into ADD_Accessories values(@Accessories_id,@Accessories_Name,@Com_Id)", CON);
-                        cmd.Parameters.AddWithValue("@Accessories_id", Label7.Text);
-                        cmd.Parameters.AddWithValue("@Accessories_Name", HttpUtility.HtmlDecode(TextBox9.Text));
+                        SqlCommand cmd = new SqlCommand("insert into ADD_Composition values(@Composition_id,@Composition_Name,@Com_Id)", CON);
+                        cmd.Parameters.AddWithValue("@Composition_id", Label7.Text);
+                        cmd.Parameters.AddWithValue("@Composition_Name", HttpUtility.HtmlDecode(TextBox9.Text));
                         cmd.Parameters.AddWithValue("@Com_Id", company_id);
                         CON.Open();
                         cmd.ExecuteNonQuery();
                         CON.Close();
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Accessories Entry saved Successfully')", true);
-                        getAccosories_no();
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Composition Entry saved Successfully')", true);
+                        getComposition_no();
                         BindData();
-                        show_Accossories();
+                        show_CompositionName();
                         TextBox9.Text = "";
                         con1.Close();
 
@@ -965,19 +986,19 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
                 if (TextBox14.Text == "")
                 {
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Enter Knitting Name')", true);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Please Enter Company Name')", true);
                 }
                 else
                 {
                     SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                    SqlCommand cmd1 = new SqlCommand("select * from ADD_Knitting where Knitting_Name='" + TextBox14.Text + "' AND Com_Id='" + company_id + "'  ", con1);
+                    SqlCommand cmd1 = new SqlCommand("select * from ADD_Qualifier where Quali_Company_Name='" + TextBox14.Text + "' AND Com_Id='" + company_id + "'  ", con1);
                     con1.Open();
                     SqlDataReader dr1;
                     dr1 = cmd1.ExecuteReader();
                     if (dr1.HasRows)
                     {
 
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Knitting Name already exist')", true);
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Company Name already exist')", true);
                         TextBox14.Text = "";
                     }
                     else
@@ -986,17 +1007,17 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
 
                         SqlConnection CON = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                        SqlCommand cmd = new SqlCommand("insert into ADD_Knitting values(@Knitting_id,@Knitting_Name,@Com_Id)", CON);
-                        cmd.Parameters.AddWithValue("@Knitting_id", Label10.Text);
-                        cmd.Parameters.AddWithValue("@Knitting_Name", HttpUtility.HtmlDecode(TextBox14.Text));
+                        SqlCommand cmd = new SqlCommand("insert into ADD_Qualifier values(@Quali_Comp_id,@Quali_Company_Name,@Com_Id)", CON);
+                        cmd.Parameters.AddWithValue("@Quali_Comp_id", Label10.Text);
+                        cmd.Parameters.AddWithValue("@Quali_Company_Name", HttpUtility.HtmlDecode(TextBox14.Text));
                         cmd.Parameters.AddWithValue("@Com_Id", company_id);
                         CON.Open();
                         cmd.ExecuteNonQuery();
                         CON.Close();
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Knitting Entry saved Successfully')", true);
-                        getKnitting_no();
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert Message", "alert('Qualifier Entry saved Successfully')", true);
+                        getQualifier_no();
                         BindData();
-                        show_Knitting();
+                        show_QualifierName();
                         TextBox14.Text = "";
                         con1.Close();
 
@@ -1036,7 +1057,32 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
                 company_id = Convert.ToInt32(dr1000["com_id"].ToString());
 
                 SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-                SqlCommand CMD = new SqlCommand("select * from Machine_Wise_Production where Product_Name='" + DropDownList2.SelectedItem.Text + "' and  Com_Id='" + company_id + "' ORDER BY Mac_Pro_id asc", con1);
+                SqlCommand CMD = new SqlCommand("select * from Fabric_Entry where Product_Name='" + DropDownList2.SelectedItem.Text + "' and  Com_Id='" + company_id + "' ORDER BY Fab_Pro_id asc", con1);
+                DataTable dt1 = new DataTable();
+                con1.Open();
+                SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+                da1.Fill(dt1);
+                GridView1.DataSource = dt1;
+                GridView1.DataBind();
+            }
+            con1000.Close();
+        }
+    }
+    protected void TextBox15_TextChanged(object sender, EventArgs e)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            SqlConnection con1000 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1000 = new SqlCommand("select * from user_details where company_name='" + User.Identity.Name + "'", con1000);
+            SqlDataReader dr1000;
+            con1000.Open();
+            dr1000 = cmd1000.ExecuteReader();
+            if (dr1000.Read())
+            {
+                company_id = Convert.ToInt32(dr1000["com_id"].ToString());
+
+                SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand CMD = new SqlCommand("select * from Fabric_Entry where Division='" + TextBox15.Text + "' and  Com_Id='" + company_id + "' ORDER BY Fab_Pro_id asc", con1);
                 DataTable dt1 = new DataTable();
                 con1.Open();
                 SqlDataAdapter da1 = new SqlDataAdapter(CMD);
