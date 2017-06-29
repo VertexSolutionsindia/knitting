@@ -1187,11 +1187,12 @@
    
    </div>
 
-        <div class="col-md-3"><h3>Mobile No :</h3>
+        <div class="col-md-3"><h3>Colors :</h3>
 
       <asp:UpdatePanel ID="UpdatePanel16" runat="server">
    <ContentTemplate>
-     <asp:TextBox ID="TextBox15" runat="server" class="form-control input-x2 dropbox" AutoPostBack="true" ></asp:TextBox> 
+     <asp:TextBox ID="TextBox15" runat="server" class="form-control input-x2 dropbox" 
+           AutoPostBack="true" ontextchanged="TextBox15_TextChanged" ></asp:TextBox> 
        <asp:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" MinimumPrefixLength="1" ServiceMethod="SearchCustomers1" FirstRowSelected = "false" CompletionInterval="100" EnableCaching="false" CompletionSetCount="10" TargetControlID="TextBox15"  CompletionListCssClass="completionList"
      CompletionListItemCssClass="listItem"
      CompletionListHighlightedItemCssClass="itemHighlighted">

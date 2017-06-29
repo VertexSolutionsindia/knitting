@@ -550,93 +550,38 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
     {
 
     }
-    //[System.Web.Script.Services.ScriptMethod()]
-    //[System.Web.Services.WebMethod]
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
 
-    //public static List<string> SearchCustomers1(string prefixText, int count)
-    //{
-    //    //using (SqlConnection conn = new SqlConnection())
-    //    //{
-    //    //    conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
+    public static List<string> SearchCustomers1(string prefixText, int count)
+    {
+        using (SqlConnection conn = new SqlConnection())
+        {
+            conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
 
-    //    //    using (SqlCommand cmd = new SqlCommand())
-    //    //    {
-    //    //        cmd.CommandText = "select distinct Mobile_no from Purchase_Return where Com_Id=@Com_Id and " +
-    //    //        "Mobile_no like @Mobile_no + '%'";
-    //    //        cmd.Parameters.AddWithValue("@Mobile_no", prefixText);
-    //    //        cmd.Parameters.AddWithValue("@Com_Id",company_id);
-    //    //        cmd.Connection = conn;
-    //    //        conn.Open();
-    //    //        List<string> customers = new List<string>();
-    //    //        using (SqlDataReader sdr = cmd.ExecuteReader())
-    //    //        {
-    //    //            while (sdr.Read())
-    //    //            {
-    //    //                customers.Add(sdr["Mobile_no"].ToString());
-    //    //            }
-    //    //        }
-    //    //        conn.Close();
-    //    //        return customers;
-    //    //    }
-    //    //}
-    //}
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.CommandText = "select distinct Colors from Material_Entry where Com_Id=@Com_Id and " +
+                "Colors like @Colors + '%'";
+                cmd.Parameters.AddWithValue("@Colors", prefixText);
+                cmd.Parameters.AddWithValue("@Com_Id", company_id);
+                cmd.Connection = conn;
+                conn.Open();
+                List<string> customers = new List<string>();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        customers.Add(sdr["Colors"].ToString());
+                    }
+                }
+                conn.Close();
+                return customers;
+            }
+        }
+    }
 
-    //[System.Web.Script.Services.ScriptMethod()]
-    //[System.Web.Services.WebMethod]
 
-    //public static List<string> SearchMaterial_Name(string prefixText, int count)
-    //{
-    //    //using (SqlConnection conn = new SqlConnection())
-    //    //{
-    //    //    conn.ConnectionString = ConfigurationManager.AppSettings["connection"];
-
-    //    //    using (SqlCommand cmd = new SqlCommand())
-    //    //    {
-    //    //        cmd.CommandText = "select distinct Material_name from Material_Entry where Com_Id=@Com_Id and " +
-    //    //        "Material_name like @Material_name + '%'";
-    //    //        cmd.Parameters.AddWithValue("@Material_name", prefixText);
-    //    //        cmd.Parameters.AddWithValue("@Com_Id", company_id);
-    //    //        cmd.Connection = conn;
-    //    //        conn.Open();
-    //    //        List<string> customers = new List<string>();
-    //    //        using (SqlDataReader sdr = cmd.ExecuteReader())
-    //    //        {
-    //    //            while (sdr.Read())
-    //    //            {
-    //    //                customers.Add(sdr["Material_name"].ToString());
-    //    //            }
-    //    //        }
-    //    //        conn.Close();
-    //    //        return customers;
-    //    //    }
-    //    //}
-    //}
-
-    //protected void TextBox15_TextChanged(object sender, EventArgs e)
-    //{
-
-    //    //if (User.Identity.IsAuthenticated)
-    //    //{
-    //    //    SqlConnection con1000 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-    //    //    SqlCommand cmd1000 = new SqlCommand("select * from user_details where company_name='" + User.Identity.Name + "'", con1000);
-    //    //    SqlDataReader dr1000;
-    //    //    con1000.Open();
-    //    //    dr1000 = cmd1000.ExecuteReader();
-    //    //    if (dr1000.Read())
-    //    //    {
-    //    //        company_id = Convert.ToInt32(dr1000["com_id"].ToString());
-    //    //        SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
-    //    //        SqlCommand CMD = new SqlCommand("select * from Purchase_Return where Mobile_no='" + TextBox15.Text + "' and Com_Id='" + company_id + "' ", con1);
-    //    //        DataTable dt1 = new DataTable();
-    //    //        con1.Open();
-    //    //        SqlDataAdapter da1 = new SqlDataAdapter(CMD);
-    //    //        da1.Fill(dt1);
-    //    //        GridView1.DataSource = dt1;
-    //    //        GridView1.DataBind();
-    //    //    }
-    //    //    con1000.Close();
-    //    //}
-    //}
 
     protected void lnkView_Click(object sender, EventArgs e)
     {
@@ -1037,6 +982,31 @@ public partial class Admin_MachineWiseProduction : System.Web.UI.Page
 
                 SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
                 SqlCommand CMD = new SqlCommand("select * from Machine_Wise_Production where Product_Name='" + DropDownList2.SelectedItem.Text + "' and  Com_Id='" + company_id + "' ORDER BY Mac_Pro_id asc", con1);
+                DataTable dt1 = new DataTable();
+                con1.Open();
+                SqlDataAdapter da1 = new SqlDataAdapter(CMD);
+                da1.Fill(dt1);
+                GridView1.DataSource = dt1;
+                GridView1.DataBind();
+            }
+            con1000.Close();
+        }
+    }
+    protected void TextBox15_TextChanged(object sender, EventArgs e)
+    {
+
+        if (User.Identity.IsAuthenticated)
+        {
+            SqlConnection con1000 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+            SqlCommand cmd1000 = new SqlCommand("select * from user_details where company_name='" + User.Identity.Name + "'", con1000);
+            SqlDataReader dr1000;
+            con1000.Open();
+            dr1000 = cmd1000.ExecuteReader();
+            if (dr1000.Read())
+            {
+                company_id = Convert.ToInt32(dr1000["com_id"].ToString());
+                SqlConnection con1 = new SqlConnection(ConfigurationManager.AppSettings["connection"]);
+                SqlCommand CMD = new SqlCommand("select * from Machine_Wise_Production where Colors='" + TextBox15.Text + "' and Com_Id='" + company_id + "' ", con1);
                 DataTable dt1 = new DataTable();
                 con1.Open();
                 SqlDataAdapter da1 = new SqlDataAdapter(CMD);
