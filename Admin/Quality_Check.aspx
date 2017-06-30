@@ -375,13 +375,7 @@ left: auto !important;
                             <div class="page-title see2">
                                 <h2>Quality Check Entry
                                  </h2>
-                             
-                             
-  
-
-
-
-                                
+                               
                             </div>
                             
                         </div>
@@ -442,7 +436,7 @@ left: auto !important;
                                     </div>
                                     </div>
       
-                                <div class="form-group"><label class="col-lg-2 control-label">Fabric Quality Definition : </label>
+                                <div class="form-group"><label class="col-lg-2 control-label">Fabric Quality Description : </label>
                               
                                     <div class="col-lg-3">
                                      <asp:UpdatePanel ID="UpdatePanel4" runat="server">
@@ -627,7 +621,7 @@ left: auto !important;
                                     
                                     </div>
                           
-                                                                 <div class="form-group"><label class="col-lg-2 control-label">No.OfFeed.: </label>
+                                                                 <div class="form-group"><label class="col-lg-2 control-label">No.Of Feed : </label>
                               
                                     <div class="col-lg-3">
                                      <asp:UpdatePanel ID="UpdatePanel38" runat="server">
