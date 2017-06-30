@@ -373,7 +373,7 @@ left: auto !important;
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="page-title see2">
-                                <h2>Quality Check Entry
+                                <h2><font color="#820000">Quality Check Entry</font>
                                  </h2>
                                
                             </div>

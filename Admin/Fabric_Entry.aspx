@@ -356,7 +356,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="page-title see2">
-                                <h2>Fabric Entry
+                                <h2><font color="#820000">Fabric Entry</font>
                                  </h2>
                              
                              

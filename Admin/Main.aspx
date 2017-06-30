@@ -255,7 +255,7 @@ th {
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="page-title see2">
-                                <h2>Material Entry 
+                                <h2><font color="#820000">Material Entry </font>
                                  </h2>
                              
                              

@@ -357,7 +357,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="page-title see2">
-                                <h2>Supplier Entry
+                                <h2><font color="#820000">Supplier Entry</font>
                                  </h2>
                              
                              

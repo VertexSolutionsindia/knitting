@@ -356,7 +356,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="page-title see2">
-                                <h2>Machine Wise Production
+                                <h2><font color="#820000">Machine Wise Production</font>
                                  </h2>
                              
                              
