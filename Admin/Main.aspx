@@ -182,7 +182,7 @@ th {
                            
 
                              <li>
-                                <a href="Purchase_entry.aspx"><i class="fa fa-paypal fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Inventory </span><span class="fa arrow"></span></a>
+                                <a href="Purchase_Order.aspx"><i class="fa fa-paypal fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Inventory </span><span class="fa arrow"></span></a>
                              <ul class="nav nav-second-level collapse">
                                       <li><a href="Purchase_Order.aspx">Purchase Order</a></li>
                                     <li><a href="Purchase_Return.aspx">Purchase Return</a></li>
@@ -193,10 +193,12 @@ th {
                                
                             </li>
                                   <li>
-                                <a href="Stock_Inventory.aspx"><i class="fa fa-clone fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Production </span><span class="fa arrow"></span></a>
+                                <a href="MachineWiseProduction.aspx"><i class="fa fa-clone fa-2x" aria-hidden="true"></i> <span class="nav-label">&nbsp;&nbsp; Production </span><span class="fa arrow"></span></a>
                              <ul class="nav nav-second-level collapse">
                                <li><a href="MachineWiseProduction.aspx">Machine Wise Production</a></li>
                                    <li><a href="Fabric_Entry.aspx">Fabric Production</a></li>
+                                      <li><a href="Revised_FabricEntry.aspx">Revised Fabric Production</a></li>
+                                        <li><a href="Quality_Check.aspx">Quality Check</a></li>
                            </ul>
                           
                                
